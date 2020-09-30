@@ -1,5 +1,3 @@
-export default {
-  multiply(a: number, b: number) {
-    return Promise.resolve(a * b);
-  },
-};
+import TextInputMask from './text-input-mask';
+
+export default TextInputMask;

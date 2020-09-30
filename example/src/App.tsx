@@ -1,17 +1,25 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import MaskedInput from 'react-native-masked-input';
+import { StyleSheet, View } from 'react-native';
+import MaskedInput from '../../src';
+import { useCallback } from 'react';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<string>('');
 
-  React.useEffect(() => {
-    MaskedInput.multiply(3, 7).then(setResult);
+  const onChangeCallback = useCallback((maskedText) => {
+    setResult(maskedText);
   }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <MaskedInput
+        options={{
+          suffixUnit: 'TL',
+        }}
+        placeholder={'testt test'}
+        type={'money'}
+        value={result}
+        onChangeText={onChangeCallback}
+      />
     </View>
   );
 }

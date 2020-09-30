@@ -1,116 +1,117 @@
-import BaseMask from './_base.mask'
-import VanillaMasker from '../internal-dependencies/vanilla-masker'
+import BaseMask from './_base.mask';
+import VanillaMasker from '../internal-dependencies/vanilla-masker';
 
 const MONEY_MASK_SETTINGS = {
-    precision: 2,
-    separator: ',',
-    delimiter: '.',
-    unit: 'R$',
-    suffixUnit: ''
-}
+  precision: 2,
+  separator: ',',
+  delimiter: '.',
+  unit: 'R$',
+  suffixUnit: '',
+};
 
 export default class MoneyMask extends BaseMask {
-    static getType() {
-        return 'money'
+  static getType() {
+    return 'money';
+  }
+
+  getValue(value, settings) {
+    const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    const raw = this.getRawValueForMask(value, mergedSettings);
+
+    // empty content should return empty string
+    if (raw === '') {
+      return '';
     }
 
-    getValue(value, settings) {
+    return VanillaMasker.toMoney(raw, mergedSettings);
+  }
 
-        const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings)
-        const raw = this.getRawValueForMask(value, mergedSettings)
+  handleBlur(maskedValue, settings) {
+    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    const includeSuffix = opts.suffixUnit ? opts.suffixUnit : '';
+    let { maskedText, rawText } = this.handleFocus(maskedValue, settings);
 
-        // empty content should return empty string
-        if (raw === "") {
-            return ""
-        }
+    maskedText = `${maskedText}${includeSuffix}`;
 
-        return VanillaMasker.toMoney(
-            raw,
-            mergedSettings
-        )
+    return { maskedText, rawText };
+  }
+
+  handleFocus(maskedValue, settings) {
+    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    maskedValue =
+      typeof maskedValue === 'number' ? maskedValue.toString() : maskedValue;
+
+    console.log('focus', maskedValue);
+
+    const rawValue = this.getRawValue(maskedValue, opts);
+    return {
+      maskedText: maskedValue.replace(opts.suffixUnit, ''),
+      rawText: rawValue,
+    };
+  }
+
+  normalizeValue(maskedValue, settings) {
+    if (typeof maskedValue === 'number') {
+      return maskedValue;
     }
 
-    handleBlur(maskedValue, settings){
-        const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings)
-        const includeSuffix = opts.suffixUnit ? opts.suffixUnit : ''
+    const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    const cleaned = super
+      .removeNotNumbersForMoney(maskedValue)
+      .toString()
+      .split(mergedSettings.separator);
 
-        return `${maskedValue}${includeSuffix}`
+    // if seperator and delimeter are the same we cannot use the way we did before
+    // this should not happen but if happens for some reason we will try to find decimals
+    if (mergedSettings.separator === mergedSettings.delimiter) {
+      if (cleaned.length === 1) {
+        return cleaned[0];
+      }
+
+      const lastPart = cleaned.pop();
+      const isLastPartDecimal = lastPart.length <= mergedSettings.precision;
+
+      return cleaned.join('') + (isLastPartDecimal ? '.' + lastPart : lastPart);
     }
 
-    handleFocus(maskedValue, settings){
-        const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings)
+    return cleaned.join('').replace(mergedSettings.delimiter, '.');
+  }
 
-        maskedValue = typeof maskedValue === "number" ? maskedValue.toString() : maskedValue
+  getRawValueForMask(maskedValue, settings) {
+    const normalized = this.normalizeValue(maskedValue, settings);
 
-        return maskedValue.replace(opts.suffixUnit, "")
+    if (normalized === '') {
+      return '';
     }
 
-    normalizeValue(maskedValue, settings) {
-        if (typeof maskedValue === "number") {
-            return maskedValue
-        }
+    return normalized;
+  }
 
-        const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings)
-        const cleaned = super.removeNotNumbersForMoney(maskedValue).toString()
-            .split(mergedSettings.separator)
+  getRawValue(maskedValue, settings) {
+    const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    const normalized = this.normalizeValue(maskedValue, mergedSettings);
+    return Number(normalized);
+  }
 
-        // if seperator and delimeter are the same we cannot use the way we did before
-        // this should not happen but if happens for some reason we will try to find decimals
-        if (mergedSettings.separator === mergedSettings.delimiter) {
+  validate(value, settings) {
+    return true;
+  }
 
-            if (cleaned.length === 1) {
-                return cleaned[0]
-            }
-
-            const lastPart = cleaned.pop()
-            const isLastPartDecimal = lastPart.length <= mergedSettings.precision
-
-            return cleaned.join('') + (isLastPartDecimal ? '.' + lastPart : lastPart)
-        }
-
-        return cleaned.join('')
-            .replace(mergedSettings.delimiter, '.')
+  _sanitize(value, settings) {
+    if (typeof value === 'number') {
+      return value.toFixed(settings.precision);
     }
 
-    getRawValueForMask(maskedValue, settings) {
-        const normalized = this.normalizeValue(maskedValue, settings)
+    return value;
+  }
 
-        if (normalized === "") {
-            return ""
-        }
-
-
-        return normalized
+  _insert(text, index, string) {
+    if (index > 0) {
+      return (
+        text.substring(0, index) + string + text.substring(index, text.length)
+      );
+    } else {
+      return string + text;
     }
-
-    getRawValue(maskedValue, settings) {
-
-        const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings)
-        const normalized = this.normalizeValue(maskedValue, mergedSettings)
-        return Number(normalized)
-    }
-
-    validate(value, settings) {
-        return true
-    }
-
-    _sanitize(value, settings) {
-        if (typeof value === 'number') {
-            return value.toFixed(settings.precision)
-        }
-
-        return value
-    }
-
-    _insert(text, index, string) {
-        if (index > 0) {
-            return (
-                text.substring(0, index) +
-                string +
-                text.substring(index, text.length)
-            )
-        } else {
-            return string + text
-        }
-    }
+  }
 }
