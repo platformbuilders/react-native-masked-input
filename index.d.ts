@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { TextInput, TextInputProps } from 'react-native';
-import type { LegacyRef, ReactText, Ref, RefObject } from 'react';
+import type { ReactText, Ref } from 'react';
 
 // Type prop of TextInputMask.
 export type TextInputMaskTypeProp =
@@ -111,20 +111,20 @@ export class TextInputMask extends React.Component<TextInputMaskProps> {}
 export class TextMask extends React.Component<TextInputMaskProps> {}
 
 // MaskService
-export namespace MaskService {
-  function toMask(
+declare namespace MaskService {
+  declare function toMask(
     type: TextInputMaskTypeProp,
     value: string,
     options?: TextInputMaskOptionProp
   ): string;
 
-  function toRawValue(
+  declare function toRawValue(
     type: TextInputMaskTypeProp,
     maskedValue: string,
     options?: TextInputMaskOptionProp
   ): string;
 
-  function isValid(
+  declare function isValid(
     type: TextInputMaskTypeProp,
     value: string,
     options?: TextInputMaskOptionProp

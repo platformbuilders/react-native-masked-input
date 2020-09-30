@@ -17,7 +17,7 @@
     BY_PASS_KEYS = [9, 16, 17, 18, 36, 37, 38, 39, 40, 91, 92, 93],
     isAllowedKeyCode = function (keyCode) {
       for (var i = 0, len = BY_PASS_KEYS.length; i < len; i++) {
-        if (keyCode == BY_PASS_KEYS[i]) {
+        if (keyCode === BY_PASS_KEYS[i]) {
           return false;
         }
       }
@@ -183,7 +183,7 @@
     for (i = 0; i < outputLength; i++) {
       // Reached the end of input
       if (index >= values.length) {
-        if (patternChars.length == charsValues.length) {
+        if (patternChars.length === charsValues.length) {
           return output.join('');
         } else if (
           placeholder !== undefined &&
