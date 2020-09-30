@@ -37,11 +37,10 @@ export default class MoneyMask extends BaseMask {
   }
 
   handleFocus(maskedValue, settings) {
+    if (typeof maskedValue === 'number') {
+      return { maskedText: maskedValue, rawText: maskedValue };
+    }
     const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
-    maskedValue =
-      typeof maskedValue === 'number' ? maskedValue.toString() : maskedValue;
-
-    console.log('focus', maskedValue);
 
     const rawValue = this.getRawValue(maskedValue, opts);
     return {
