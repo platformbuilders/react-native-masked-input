@@ -45,7 +45,10 @@ export default class TextInputMask<
 
   _handleChange(text: ValueType) {
     return this._maskHandler.handleChange
-      ? this._maskHandler.handleChange(text, this._getOptions())
+      ? this._maskHandler.handleChange(
+          this._getDefaultValue(text),
+          this._getOptions()
+        )
       : this.updateValue(text);
   }
 
@@ -62,7 +65,7 @@ export default class TextInputMask<
   _handleBlur(e: NativeSyntheticEvent<TextInputFocusEventData>) {
     if (this._maskHandler.handleBlur) {
       const { maskedText, rawText } = this._maskHandler.handleBlur(
-        this.props.value,
+        this._getDefaultValue(this.props.value),
         this.props.options
       );
 
@@ -77,7 +80,7 @@ export default class TextInputMask<
   _handleFocus(e: NativeSyntheticEvent<TextInputFocusEventData>) {
     if (this._maskHandler.handleFocus) {
       const { maskedText, rawText } = this._maskHandler.handleFocus(
-        this.props.value,
+        this._getDefaultValue(this.props.value),
         this.props.options
       );
       this.setContent(maskedText, rawText);
