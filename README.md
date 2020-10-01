@@ -1,8 +1,7 @@
 a# react-native-masked-input
 
 ![downloads](https://img.shields.io/npm/dt/react-native-masked-input.svg)
-[![Help Contribute to Open Source](https://www.codetriage.com/benhurott/react-native-masked-input/badges/users.svg)](https://www.codetriage.com/benhurott/react-native-masked-input)
-
+[![Open Source Helpers](https://www.codetriage.com/thevsstech/react-native-masked-input/badges/users.svg)](https://www.codetriage.com/thevsstech/react-native-masked-input)
 
 This is a simple masked text (normal text and input text) component for React-Native.
 
