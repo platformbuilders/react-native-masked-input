@@ -1,6 +1,7 @@
+import type { TextInputMaskOptionProp, TextInputMaskTypeProp } from './types';
 export default class MaskService {
-    static toMask(type: any, value: any, settings: any): any;
-    static toRawValue(type: any, maskedValue: any, settings: any): any;
-    static isValid(type: any, value: any, settings: any): any;
-    static getMask(type: any, value: any, settings: any): any;
+    static toMask(type: TextInputMaskTypeProp, value: string, options?: TextInputMaskOptionProp): any;
+    static toRawValue(type: TextInputMaskTypeProp, maskedValue: string, options?: TextInputMaskOptionProp): any;
+    static isValid(type: TextInputMaskTypeProp, value: string, options?: TextInputMaskOptionProp): any;
+    static getMask(type: TextInputMaskTypeProp, value: string, options?: TextInputMaskOptionProp): any;
 }

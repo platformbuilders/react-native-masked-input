@@ -1,5 +1,5 @@
 import { PureComponent } from 'react';
-import type { MaskHandlerInterface, MaskHandlerReturnType, TextInputMaskProps, ValueType } from '../index';
+import type { MaskHandlerInterface, MaskHandlerReturnType, TextInputMaskProps, ValueType } from './types';
 export default class BaseTextComponent<T extends TextInputMaskProps> extends PureComponent<T> {
     _maskHandler: MaskHandlerInterface<any>;
     constructor(props: T);

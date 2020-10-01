@@ -10,7 +10,7 @@ import type {
   TextInputMaskProps,
   TextInputOptionBaseInterface,
   ValueType,
-} from '../index';
+} from './types';
 import type { ReactText, RefObject } from 'react';
 import React from 'react';
 

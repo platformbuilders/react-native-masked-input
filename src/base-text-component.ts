@@ -5,7 +5,7 @@ import type {
   MaskHandlerReturnType,
   TextInputMaskProps,
   ValueType,
-} from '../index';
+} from './types';
 
 export default class BaseTextComponent<
   T extends TextInputMaskProps

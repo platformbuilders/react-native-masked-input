@@ -6,8 +6,7 @@
  * Definitions by: Italo Izaac <https://github.com/iiandrade>
  */
 
-import * as React from 'react';
-import { TextInput, TextInputProps } from 'react-native';
+import type { TextInput, TextInputProps } from 'react-native';
 import type { ReactText, Ref } from 'react';
 
 // Type prop of TextInputMask.
@@ -51,7 +50,7 @@ export interface TextInputMoneyMaskOptions {
   zeroCents?: boolean;
 }
 
-export interface TextInputMoneyPhoneOptions {
+export interface TextInputPhoneOptions {
   withDDD?: boolean;
   dddMask?: string;
   maskType?: 'BRL' | 'INTERNATIONAL';
@@ -73,7 +72,7 @@ export type SupportedCreditCardIssuers =
   | 'hiper'
   | 'hipercard';
 
-export interface TextInputMoneyDatetimeOptions {
+export interface TextInputDatetimeOptions {
   format?: string;
 }
 
@@ -92,16 +91,24 @@ export interface TextInputCustomMaskOptions {
 // Option prop of TextInputMask.
 export type TextInputMaskOptionProp = TextInputOptionBaseInterface &
   TextInputMoneyMaskOptions &
-  TextInputMoneyDatetimeOptions &
+  TextInputDatetimeOptions &
   TextInputCreditCardOptions &
+  TextInputPhoneOptions &
   TextInputCustomMaskOptions;
 
 export interface TextInputOptionBaseInterface {}
 
+type TextInputPropsWithoutValue = Pick<
+  TextInputProps,
+  Exclude<keyof TextInputProps, 'value'>
+>;
 // TextInputMask Props
 export interface TextInputMaskProps<
   Options extends TextInputOptionBaseInterface = TextInputMaskOptionProp
-> extends Pick<TextInputProps, Exclude<keyof TextInputProps, 'onChangeText'>> {
+> extends Pick<
+    TextInputProps,
+    Exclude<keyof TextInputPropsWithoutValue, 'onChangeText'>
+  > {
   type: TextInputMaskTypeProp;
   options?: Options;
   checkText?: (previous: ValueType, next: ValueType) => boolean;
@@ -112,47 +119,8 @@ export interface TextInputMaskProps<
   value: ValueType;
 }
 
-// TextInputMask Component
-export class TextInputMask extends React.Component<TextInputMaskProps> {}
-
-// TextMask
-export class TextMask extends React.Component<TextInputMaskProps> {}
-
-// MaskService
-declare namespace MaskService {
-  declare function toMask(
-    type: TextInputMaskTypeProp,
-    value: string,
-    options?: TextInputMaskOptionProp
-  ): string;
-
-  declare function toRawValue(
-    type: TextInputMaskTypeProp,
-    maskedValue: string,
-    options?: TextInputMaskOptionProp
-  ): string;
-
-  declare function isValid(
-    type: TextInputMaskTypeProp,
-    value: string,
-    options?: TextInputMaskOptionProp
-  ): boolean;
-}
-
-// TextInputMaskMethods
-export class TextInputMaskMethods {
-  getElement(): TextInput;
-
-  getRawValue(): string;
-
-  isValid(): boolean;
-}
-
-// TextInputMasked
-export type TextInputMasked = TextInputMaskMethods | null;
-
 // TextMaskMethods
-export class TextMaskMethods {
+interface TextMaskMethods {
   getElement(): TextInput;
 }
 
