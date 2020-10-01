@@ -1,6 +1,6 @@
 {
   "name": "react-native-masked-input",
-  "version": "2.0.2",
+  "version": "2.1.1",
   "description": "Text and TextInput with mask for React Native applications",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
