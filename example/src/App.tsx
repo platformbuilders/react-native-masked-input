@@ -4,7 +4,7 @@ import MaskedInput from '../../src/';
 import { useCallback } from 'react';
 
 export default function App() {
-  const [result, setResult] = React.useState<string>('');
+  const [result, setResult] = React.useState<string | number>(0);
 
   const onChangeCallback = useCallback((maskedText) => {
     setResult(maskedText);

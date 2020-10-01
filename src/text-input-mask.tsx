@@ -89,6 +89,9 @@ export default class TextInputMask<
   }
 
   _trySetNativeProps(maskedText: ValueType) {
+    if (typeof maskedText === 'number') {
+      maskedText = maskedText.toString();
+    }
     try {
       const element = this.getElement();
 
