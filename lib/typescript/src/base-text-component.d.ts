@@ -5,11 +5,10 @@ export default class BaseTextComponent<T extends TextInputMaskProps> extends Pur
     constructor(props: T);
     componentDidMount(): void;
     componentDidUpdate(prevProps: T): void;
-    updateValue(text: string): MaskHandlerReturnType;
+    updateValue(text: ValueType): MaskHandlerReturnType;
     isValid(): void;
     getRawValueFor(value: ValueType): number;
     getRawValue(): number;
-    getDisplayValueFor(value: ValueType): string;
     _getOptions(): T["options"] | undefined;
     _mustUpdateValue(newValue: ValueType): boolean;
     _resolveMaskHandler(): void;

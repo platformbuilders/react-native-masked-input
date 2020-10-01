@@ -1,12 +1,14 @@
 import { TextInput, NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import BaseTextComponent from './base-text-component';
-import type { TextInputMaskProps, ValueType } from '../index';
+import type { TextInputMaskProps, TextInputOptionBaseInterface, ValueType } from '../index';
 import type { ReactText, RefObject } from 'react';
-export default class TextInputMask extends BaseTextComponent<TextInputMaskProps> {
+export default class TextInputMask<Options extends TextInputOptionBaseInterface> extends BaseTextComponent<TextInputMaskProps<Options>> {
     _inputElement: RefObject<TextInput>;
-    constructor(props: TextInputMaskProps);
+    constructor(props: TextInputMaskProps<Options>);
     getElement(): RefObject<TextInput>;
     setContent: (maskedText: ReactText, rawText: number) => void;
+    getDisplayValueFor(value: ValueType): string;
+    _handleChange(text: ValueType): import("..").MaskHandlerReturnType;
     _onChangeText(text: string): void;
     _handleBlur(e: NativeSyntheticEvent<TextInputFocusEventData>): void;
     _handleFocus(e: NativeSyntheticEvent<TextInputFocusEventData>): void;

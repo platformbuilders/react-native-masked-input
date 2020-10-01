@@ -5,6 +5,10 @@ export default class MoneyMask extends BaseMask {
         maskedText: any;
         rawText: number;
     };
+    handleChange(value: any, settings: any): {
+        maskedText: string;
+        rawText: number;
+    };
     handleFocus(maskedValue: any, settings: any): {
         maskedText: any;
         rawText: number;

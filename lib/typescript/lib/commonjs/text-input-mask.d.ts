@@ -10,6 +10,8 @@ declare class TextInputMask extends TextInputMask_base {
     _inputElement: any;
     _onChangeText(text: any): void;
     getElement(): any;
+    getDisplayValueFor(value: any): any;
+    _handleChange(text: any): any;
     _trySetNativeProps(maskedText: any): void;
     _checkText(text: any): any;
     _getKeyboardType(): any;

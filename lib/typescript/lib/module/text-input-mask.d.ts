@@ -5,6 +5,8 @@ export default class TextInputMask extends BaseTextComponent {
     _inputElement: React.RefObject<any>;
     _onChangeText(text: any): void;
     getElement(): React.RefObject<any>;
+    getDisplayValueFor(value: any): any;
+    _handleChange(text: any): any;
     _trySetNativeProps(maskedText: any): void;
     _checkText(text: any): any;
     _getKeyboardType(): any;

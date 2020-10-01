@@ -7,7 +7,6 @@ export default class BaseTextComponent extends PureComponent<any, any, any> {
     isValid(): any;
     getRawValueFor(value: any): any;
     getRawValue(): any;
-    getDisplayValueFor(value: any): any;
     _getOptions(): any;
     _mustUpdateValue(newValue: any): boolean;
     _resolveMaskHandler(): void;

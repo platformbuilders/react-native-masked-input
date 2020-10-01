@@ -3,7 +3,7 @@ declare var _default: typeof BaseMask | undefined;
 export default _default;
 declare class BaseMask {
     getKeyboardType(): string;
-    mergeSettings(obj1: any, obj2: any): {};
+    mergeSettings(obj1: any, obj2: any): any;
     getRawValue(maskedValue: any, settings: any): any;
     getDefaultValue(value: any): any;
     getMask(value: any, settings: any): void;

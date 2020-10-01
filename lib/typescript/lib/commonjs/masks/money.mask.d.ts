@@ -10,6 +10,10 @@ declare class MoneyMask extends MoneyMask_base {
         maskedText: any;
         rawText: number;
     };
+    handleChange(value: any, settings: any): {
+        maskedText: any;
+        rawText: number;
+    };
     handleFocus(maskedValue: any, settings: any): {
         maskedText: any;
         rawText: number;
