@@ -8,8 +8,9 @@ import type {
 } from './types';
 
 export default class BaseTextComponent<
-  T extends TextInputMaskProps
-> extends PureComponent<T> {
+  T extends TextInputMaskProps,
+  S extends any
+> extends PureComponent<T, S> {
   _maskHandler!: MaskHandlerInterface<any>;
   constructor(props: T) {
     super(props);

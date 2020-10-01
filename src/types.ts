@@ -35,10 +35,7 @@ export interface MaskHandlerInterface<
   getValue: (value: ValueType, settings?: Options) => string;
   handleBlur?: (value: ValueType, settings?: Options) => MaskHandlerReturnType;
   handleFocus?: (value: ValueType, settings?: Options) => MaskHandlerReturnType;
-  handleInit?: (
-    value: ValueType,
-    settings: Options
-  ) => MaskHandlerInterface<any>;
+  handleInit?: (value: ValueType, settings: Options) => MaskHandlerReturnType;
   handleChange?: (value: ValueType, settings: Options) => MaskHandlerReturnType;
   getKeyboardType?: () => string;
 }

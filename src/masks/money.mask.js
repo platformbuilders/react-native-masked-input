@@ -42,7 +42,7 @@ export default class MoneyMask extends BaseMask {
   includeSuffix(maskedValue, opts) {
     const includeSuffix = opts.suffixUnit ? opts.suffixUnit : '';
     let { maskedText, rawText } = {
-      maskedText: this.clearSuffix(maskedValue, includeSuffix),
+      maskedText: this.clearSuffix(maskedValue, includeSuffix, opts.unit),
       rawText: this.getRawValue(maskedValue, opts),
     };
     maskedText = this.getValue(maskedText, opts);
@@ -62,12 +62,17 @@ export default class MoneyMask extends BaseMask {
     let maskedText = this.getValue(value, opts);
     return { maskedText, rawText: this.getRawValue(maskedText) };
   }
-  clearSuffix(value, suffixUnit) {
+
+  clearSuffix(value, suffixUnit, unit) {
     if (typeof value === 'number' || suffixUnit === '') {
       return value;
     }
 
-    return value.includes(suffixUnit) ? value.replace(suffixUnit, '') : value;
+    let position = value.replace(unit, '').indexOf(suffixUnit);
+
+    const includes = position > 0;
+
+    return includes ? value.slice(0, position + 1) : value;
   }
 
   handleFocus(maskedValue, settings) {
@@ -86,10 +91,7 @@ export default class MoneyMask extends BaseMask {
     const rawValue = this.getRawValue(maskedValue, opts);
 
     return {
-      maskedText:
-        rawValue !== 0
-          ? this.clearSuffix(maskedValue, opts.suffixUnit || '')
-          : '',
+      maskedText: maskedValue,
       rawText: rawValue,
     };
   }

@@ -14,9 +14,13 @@ import type {
 import type { ReactText, RefObject } from 'react';
 import React from 'react';
 
+type State = {
+  focused: boolean;
+};
+
 export default class TextInputMask<
   Options extends TextInputOptionBaseInterface
-> extends BaseTextComponent<TextInputMaskProps<Options>> {
+> extends BaseTextComponent<TextInputMaskProps<Options>, State> {
   _inputElement!: RefObject<TextInput>;
 
   constructor(props: TextInputMaskProps<Options>) {
@@ -26,6 +30,10 @@ export default class TextInputMask<
     this._handleBlur = this._handleBlur.bind(this);
     this._inputElement = React.createRef<TextInput>();
     this._onChangeText = this._onChangeText.bind(this);
+
+    this.state = {
+      focused: false,
+    };
   }
 
   get getElement() {
@@ -39,8 +47,26 @@ export default class TextInputMask<
     }
   };
 
+  /**
+   * if focused use handleFocus if available
+   * @param value
+   */
   getDisplayValueFor(value: ValueType) {
-    return this._handleChange(value).maskedText;
+    if (this.state.focused && this._maskHandler.handleFocus) {
+      const { maskedText } = this._maskHandler.handleFocus(
+        this._getDefaultValue(this.props.value),
+        this.props.options
+      );
+
+      return maskedText;
+    }
+
+    return this._maskHandler.handleBlur
+      ? this._maskHandler.handleBlur(
+          this._getDefaultValue(this.props.value),
+          this.props.options
+        ).maskedText
+      : this._handleChange(value).maskedText;
   }
 
   _handleChange(text: ValueType) {
@@ -63,6 +89,10 @@ export default class TextInputMask<
   }
 
   _handleBlur(e: NativeSyntheticEvent<TextInputFocusEventData>) {
+    this.setState({
+      focused: false,
+    });
+
     if (this._maskHandler.handleBlur) {
       const { maskedText, rawText } = this._maskHandler.handleBlur(
         this._getDefaultValue(this.props.value),
@@ -78,6 +108,10 @@ export default class TextInputMask<
   }
 
   _handleFocus(e: NativeSyntheticEvent<TextInputFocusEventData>) {
+    this.setState({
+      focused: true,
+    });
+
     if (this._maskHandler.handleFocus) {
       const { maskedText, rawText } = this._maskHandler.handleFocus(
         this._getDefaultValue(this.props.value),
@@ -129,6 +163,9 @@ export default class TextInputMask<
       Input = this.props.customTextInput;
     }
 
+    let displayValue = this.getDisplayValueFor(this.props.value);
+    console.log(this.props, displayValue);
+
     return (
       <Input
         ref={this._inputElement}
@@ -141,7 +178,7 @@ export default class TextInputMask<
         onFocus={this._handleFocus}
         onBlur={this._handleBlur}
         onChangeText={this._onChangeText}
-        value={this.getDisplayValueFor(this.props.value)}
+        value={displayValue}
       />
     );
   }
