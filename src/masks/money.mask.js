@@ -1,5 +1,6 @@
 import BaseMask from './_base.mask';
 import VanillaMasker from '../internal-dependencies/vanilla-masker';
+import { raw } from '@storybook/react-native';
 
 const MONEY_MASK_SETTINGS = {
   precision: 2,
@@ -30,10 +31,12 @@ export default class MoneyMask extends BaseMask {
   handleBlur(maskedValue, settings) {
     const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
     const includeSuffix = opts.suffixUnit ? opts.suffixUnit : '';
-    let { maskedText, rawText } = this.handleFocus(maskedValue, settings);
+    let { maskedText, rawText } = {
+      maskedText: this.clearSuffix(maskedValue, includeSuffix),
+      rawText: this.getRawValue(maskedValue, opts),
+    };
     maskedText = this.getValue(maskedText, opts);
     maskedText = `${maskedText}${includeSuffix}`;
-
     return { maskedText, rawText };
   }
 
@@ -44,24 +47,39 @@ export default class MoneyMask extends BaseMask {
     });
 
     if (value === undefined || value === null) {
-      return { maskedText: '', rawText: this.getRawValue('') };
+      return { maskedText: '', rawText: 0 };
     }
     let maskedText = this.getValue(value, opts);
     return { maskedText, rawText: this.getRawValue(maskedText) };
   }
+  clearSuffix(value, suffixUnit) {
+    if (typeof value === 'number' || suffixUnit === '') {
+      return value;
+    }
+
+    return value.includes(suffixUnit) ? value.replace(suffixUnit, '') : value;
+  }
 
   handleFocus(maskedValue, settings) {
-    if (typeof maskedValue === 'number') {
-      return { maskedText: maskedValue, rawText: maskedValue };
-    }
     const opts = super.mergeSettings(MONEY_MASK_SETTINGS, {
       ...settings,
       zeroCents: false,
     });
 
+    if (typeof maskedValue === 'number') {
+      return {
+        maskedText: maskedValue === 0 ? '' : this.getValue(maskedValue, opts),
+        rawText: maskedValue,
+      };
+    }
+
     const rawValue = this.getRawValue(maskedValue, opts);
+
     return {
-      maskedText: maskedValue.replace(opts.suffixUnit, ''),
+      maskedText:
+        rawValue !== 0
+          ? this.clearSuffix(maskedValue, opts.suffixUnit || '')
+          : '',
       rawText: rawValue,
     };
   }

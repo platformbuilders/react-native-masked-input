@@ -3,6 +3,15 @@ import { StyleSheet, View } from 'react-native';
 import MaskedInput from '../../src/';
 import { useCallback } from 'react';
 
+let options = {
+  precision: 2,
+  separator: ',',
+  delimiter: '.',
+  unit: '$',
+  suffixUnit: '',
+  zeroCents: true,
+};
+
 export default function App() {
   const [result, setResult] = React.useState<string | number>(0);
 
@@ -12,10 +21,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <MaskedInput
-        options={{
-          suffixUnit: 'TL',
-          zeroCents: true,
-        }}
+        options={options}
         placeholder={'testt test'}
         type={'money'}
         value={result}
