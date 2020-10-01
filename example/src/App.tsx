@@ -8,7 +8,7 @@ let options = {
   separator: ',',
   delimiter: '.',
   unit: '$',
-  suffixUnit: '',
+  suffixUnit: '$',
   zeroCents: true,
 };
 

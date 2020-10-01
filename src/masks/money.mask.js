@@ -1,6 +1,5 @@
 import BaseMask from './_base.mask';
 import VanillaMasker from '../internal-dependencies/vanilla-masker';
-import { raw } from '@storybook/react-native';
 
 const MONEY_MASK_SETTINGS = {
   precision: 2,
@@ -28,8 +27,19 @@ export default class MoneyMask extends BaseMask {
     return VanillaMasker.toMoney(raw, mergedSettings);
   }
 
+  handleInit(maskedValue, settings) {
+    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+
+    return this.includeSuffix(maskedValue, opts);
+  }
+
   handleBlur(maskedValue, settings) {
     const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+
+    return this.includeSuffix(maskedValue, opts);
+  }
+
+  includeSuffix(maskedValue, opts) {
     const includeSuffix = opts.suffixUnit ? opts.suffixUnit : '';
     let { maskedText, rawText } = {
       maskedText: this.clearSuffix(maskedValue, includeSuffix),

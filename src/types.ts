@@ -26,17 +26,20 @@ export type MaskHandlerReturnType = { maskedText: string; rawText: number };
 
 export type ValueType = ReactText;
 
-export interface MaskHandlerInterface<Settings> {
-  getMask: (value: ValueType, settings: Settings) => string;
-  getRawValue: (maskedValue: ValueType, settings: Settings) => number;
-  validate: (value: ValueType, settings?: Settings) => void;
-  getValue: (value: ValueType, settings: Settings) => string;
-  handleBlur?: (value: ValueType, settings: Settings) => MaskHandlerReturnType;
-  handleFocus?: (value: ValueType, settings: Settings) => MaskHandlerReturnType;
-  handleChange?: (
+export interface MaskHandlerInterface<
+  Options extends TextInputOptionBaseInterface
+> {
+  getMask: (value: ValueType, settings?: Options) => string;
+  getRawValue: (maskedValue: ValueType, settings: Options) => number;
+  validate: (value: ValueType, settings?: Options) => void;
+  getValue: (value: ValueType, settings?: Options) => string;
+  handleBlur?: (value: ValueType, settings?: Options) => MaskHandlerReturnType;
+  handleFocus?: (value: ValueType, settings?: Options) => MaskHandlerReturnType;
+  handleInit?: (
     value: ValueType,
-    settings: Settings
-  ) => MaskHandlerReturnType;
+    settings: Options
+  ) => MaskHandlerInterface<any>;
+  handleChange?: (value: ValueType, settings: Options) => MaskHandlerReturnType;
   getKeyboardType?: () => string;
 }
 
@@ -115,7 +118,6 @@ export interface TextInputMaskProps<
   onChangeText?: (maskedText: ValueType, rawValue: number) => void;
   refInput?: Ref<TextInput>;
   customTextInput?: any;
-  customTextInputProps?: Object;
   value: ValueType;
 }
 

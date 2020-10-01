@@ -28,7 +28,7 @@ export default class TextInputMask<
     this._onChangeText = this._onChangeText.bind(this);
   }
 
-  getElement() {
+  get getElement() {
     return this._inputElement;
   }
 
@@ -96,7 +96,7 @@ export default class TextInputMask<
       maskedText = maskedText.toString();
     }
     try {
-      const element = this.getElement();
+      const element = this.getElement;
 
       element.current?.setNativeProps &&
         element.current.setNativeProps({ text: maskedText });
@@ -124,11 +124,9 @@ export default class TextInputMask<
 
   render() {
     let Input = TextInput;
-    let customTextInputProps = {};
 
     if (this.props.customTextInput) {
       Input = this.props.customTextInput;
-      customTextInputProps = this.props.customTextInputProps || {};
     }
 
     return (
@@ -140,7 +138,6 @@ export default class TextInputMask<
             : 'default') as KeyboardTypeOptions
         }
         {...this.props}
-        {...customTextInputProps}
         onFocus={this._handleFocus}
         onBlur={this._handleBlur}
         onChangeText={this._onChangeText}
