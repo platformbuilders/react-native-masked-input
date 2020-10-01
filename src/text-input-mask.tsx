@@ -164,7 +164,6 @@ export default class TextInputMask<
     }
 
     let displayValue = this.getDisplayValueFor(this.props.value);
-    console.log(this.props, displayValue);
 
     return (
       <Input
