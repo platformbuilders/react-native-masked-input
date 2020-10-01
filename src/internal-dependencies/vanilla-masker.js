@@ -39,9 +39,11 @@ class VMasker {
     const fillWithZeroCount = opts.zeroCents
       ? opts.precision - (decimals ? decimals.length : 0)
       : 0;
-    const includedZeroCents = fillWithZeroCount
-      ? Array(fillWithZeroCount).fill(0).join('')
-      : '';
+
+    const includedZeroCents =
+      fillWithZeroCount && fillWithZeroCount > 0
+        ? Array(fillWithZeroCount).fill(0).join('')
+        : '';
     const includeDecimals = (value.includes('.')
       ? `${decimalSeparator}${decimals}${includedZeroCents}`
       : fillWithZeroCount

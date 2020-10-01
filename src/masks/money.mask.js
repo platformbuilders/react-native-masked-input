@@ -16,6 +16,7 @@ export default class MoneyMask extends BaseMask {
 
   getValue(value, settings) {
     const mergedSettings = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+
     const raw = this.getRawValueForMask(value, mergedSettings);
 
     // empty content should return empty string
@@ -30,17 +31,33 @@ export default class MoneyMask extends BaseMask {
     const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
     const includeSuffix = opts.suffixUnit ? opts.suffixUnit : '';
     let { maskedText, rawText } = this.handleFocus(maskedValue, settings);
-
+    maskedText = this.getValue(maskedText, opts);
     maskedText = `${maskedText}${includeSuffix}`;
 
     return { maskedText, rawText };
+  }
+
+  handleChange(value, settings) {
+    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, {
+      ...settings,
+      zeroCents: false,
+    });
+
+    if (value === undefined || value === null) {
+      return { maskedText: '', rawText: this.getRawValue('') };
+    }
+    let maskedText = this.getValue(value, opts);
+    return { maskedText, rawText: this.getRawValue(maskedText) };
   }
 
   handleFocus(maskedValue, settings) {
     if (typeof maskedValue === 'number') {
       return { maskedText: maskedValue, rawText: maskedValue };
     }
-    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, settings);
+    const opts = super.mergeSettings(MONEY_MASK_SETTINGS, {
+      ...settings,
+      zeroCents: false,
+    });
 
     const rawValue = this.getRawValue(maskedValue, opts);
     return {

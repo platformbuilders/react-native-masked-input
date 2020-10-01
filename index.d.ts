@@ -34,6 +34,10 @@ export interface MaskHandlerInterface<Settings> {
   getValue: (value: ValueType, settings: Settings) => string;
   handleBlur?: (value: ValueType, settings: Settings) => MaskHandlerReturnType;
   handleFocus?: (value: ValueType, settings: Settings) => MaskHandlerReturnType;
+  handleChange?: (
+    value: ValueType,
+    settings: Settings
+  ) => MaskHandlerReturnType;
   getKeyboardType?: () => string;
 }
 
@@ -86,16 +90,20 @@ export interface TextInputCustomMaskOptions {
 }
 
 // Option prop of TextInputMask.
-export type TextInputMaskOptionProp = TextInputMoneyMaskOptions &
+export type TextInputMaskOptionProp = TextInputOptionBaseInterface &
+  TextInputMoneyMaskOptions &
   TextInputMoneyDatetimeOptions &
   TextInputCreditCardOptions &
   TextInputCustomMaskOptions;
 
+export interface TextInputOptionBaseInterface {}
+
 // TextInputMask Props
-export interface TextInputMaskProps
-  extends Pick<TextInputProps, Exclude<keyof TextInputProps, 'onChangeText'>> {
+export interface TextInputMaskProps<
+  Options extends TextInputOptionBaseInterface = TextInputMaskOptionProp
+> extends Pick<TextInputProps, Exclude<keyof TextInputProps, 'onChangeText'>> {
   type: TextInputMaskTypeProp;
-  options?: TextInputMaskOptionProp;
+  options?: Options;
   checkText?: (previous: ValueType, next: ValueType) => boolean;
   onChangeText?: (maskedText: ValueType, rawValue: number) => void;
   refInput?: Ref<TextInput>;

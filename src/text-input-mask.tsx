@@ -6,16 +6,20 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import BaseTextComponent from './base-text-component';
-import type { TextInputMaskProps, ValueType } from '../index';
+import type {
+  TextInputMaskProps,
+  TextInputOptionBaseInterface,
+  ValueType,
+} from '../index';
 import type { ReactText, RefObject } from 'react';
 import React from 'react';
 
-export default class TextInputMask extends BaseTextComponent<
-  TextInputMaskProps
-> {
+export default class TextInputMask<
+  Options extends TextInputOptionBaseInterface
+> extends BaseTextComponent<TextInputMaskProps<Options>> {
   _inputElement!: RefObject<TextInput>;
 
-  constructor(props: TextInputMaskProps) {
+  constructor(props: TextInputMaskProps<Options>) {
     super(props);
 
     this._handleFocus = this._handleFocus.bind(this);
@@ -35,12 +39,22 @@ export default class TextInputMask extends BaseTextComponent<
     }
   };
 
+  getDisplayValueFor(value: ValueType) {
+    return this._handleChange(value).maskedText;
+  }
+
+  _handleChange(text: ValueType) {
+    return this._maskHandler.handleChange
+      ? this._maskHandler.handleChange(text, this._getOptions())
+      : this.updateValue(text);
+  }
+
   _onChangeText(text: string) {
     if (!this._checkText(text)) {
       return;
     }
 
-    const { maskedText, rawText } = this.updateValue(text);
+    const { maskedText, rawText } = this._handleChange(text);
 
     this.setContent(maskedText, rawText);
   }

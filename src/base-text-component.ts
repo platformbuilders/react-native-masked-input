@@ -24,7 +24,7 @@ export default class BaseTextComponent<
     this._bindProps(prevProps);
   }
 
-  updateValue(text: string): MaskHandlerReturnType {
+  updateValue(text: ValueType): MaskHandlerReturnType {
     let maskedText = this._getMaskedValue(text);
     const rawText = this.getRawValueFor(maskedText);
 
@@ -50,10 +50,6 @@ export default class BaseTextComponent<
 
   getRawValue() {
     return this.getRawValueFor(this.props.value as any);
-  }
-
-  getDisplayValueFor(value: ValueType) {
-    return this._getMaskedValue(value);
   }
 
   _getOptions() {
