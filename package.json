@@ -2,19 +2,16 @@
   "name": "react-native-masked-input",
   "version": "2.2.3",
   "description": "Text and TextInput with mask for React Native applications",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/src/index.d.ts",
+  "main": "dist/index.js",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
     "src",
-    "lib",
+    "dist",
     "android",
     "ios",
     "cpp",
     "react-native-masked-input.podspec",
-    "!lib/typescript/example",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__"
@@ -74,7 +71,7 @@
     "preset": "react-native",
     "modulePathIgnorePatterns": [
       "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
+      "<rootDir>/dist/"
     ]
   },
   "husky": {
