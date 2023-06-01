@@ -57,3 +57,5 @@ android/keystores/debug.keystore
 .expo/*
 lib/
 .env
+
+dist

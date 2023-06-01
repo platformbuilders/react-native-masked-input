@@ -9,8 +9,10 @@
     "esModuleInterop": true,
     "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
+    "jsx": "react-native",
     "lib": ["esnext"],
+    "outDir": "dist",
+    "types": ["react-native", "jest"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -24,5 +26,13 @@
     "strict": true,
     "allowJs": true,
     "target": "esnext"
-  }
+  },
+  "include": [
+    "src",
+  ],
+  "exclude": [
+    "example",
+    "node_modules",
+    "dist",
+  ]
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
 import MaskedInput from '../../src/';
 import { useCallback } from 'react';
 
@@ -19,7 +18,7 @@ export default function App() {
     setResult(maskedText);
   }, []);
   return (
-    <View style={styles.container}>
+    <>
       <MaskedInput
         options={options}
         placeholder={'testt test'}
@@ -27,14 +26,6 @@ export default function App() {
         value={result}
         onChangeText={onChangeCallback}
       />
-    </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

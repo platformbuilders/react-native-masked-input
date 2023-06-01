@@ -44,11 +44,12 @@ class VMasker {
       fillWithZeroCount && fillWithZeroCount > 0
         ? Array(fillWithZeroCount).fill(0).join('')
         : '';
-    const includeDecimals = (value.includes('.')
-      ? `${decimalSeparator}${decimals}${includedZeroCents}`
-      : fillWithZeroCount
-      ? decimalSeparator + includedZeroCents
-      : ''
+    const includeDecimals = (
+      value.includes('.')
+        ? `${decimalSeparator}${decimals}${includedZeroCents}`
+        : fillWithZeroCount
+        ? decimalSeparator + includedZeroCents
+        : ''
     ).slice(0, opts.precision + 1);
 
     let data = `${includeNegative}${includePrefix}${formattedInt}${includeDecimals}`;
